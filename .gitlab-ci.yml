@@ -1,0 +1,18 @@
+image: taobeier/kindenv
+
+services:
+  - docker:dind
+
+variables:
+  DOCKER_DRIVER: overlay2
+
+stages:
+  - test
+
+smoketest:
+  stage: test
+  script:
+    - pwd
+    - ls
+    - ls /builds
+    - sh kind-smoketest.sh
