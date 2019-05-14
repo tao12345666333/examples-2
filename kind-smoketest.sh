@@ -23,7 +23,7 @@ trap cleanup EXIT
 install_latest_kind() {
     # clone kind into a tempdir within BIN_DIR
     local tmp_dir
-    tmp_dir="$(TMPDIR="${BIN_DIR}" mktemp -d "${BIN_DIR}/kind-source.XXXXX")"
+    tmp_dir="$(TMPDIR="${BIN_DIR}" mktemp -d "${BIN_DIR}/kind-source.XXXXXX")"
     cd "${tmp_dir}" || exit
     git clone https://github.com/kubernetes-sigs/kind && cd ./kind
     make install INSTALL_DIR="${BIN_DIR}"
