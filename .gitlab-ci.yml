@@ -14,4 +14,6 @@ smoketest:
   stage: test
   script:
     - curl -fsSL https://get.docker.com | sh
+    - env
+    - export DOCKER_HOST=tcp://localhost:2375
     - ./kind-smoketest.sh
