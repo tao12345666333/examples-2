@@ -13,4 +13,4 @@ smoketest:
   stage: test
   script:
     - curl -fsSL https://get.docker.com | sh
-    - sh kind-smoketest.sh
+    - ./kind-smoketest.sh
