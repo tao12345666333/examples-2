@@ -1,4 +1,4 @@
-image: taobeier/kindenv
+image: golang:1.12.5
 
 services:
   - docker:dind
@@ -12,7 +12,5 @@ stages:
 smoketest:
   stage: test
   script:
-    - pwd
-    - ls
-    - ls /builds
+    - curl -fsSL https://get.docker.com | sh
     - sh kind-smoketest.sh
