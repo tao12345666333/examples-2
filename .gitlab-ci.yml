@@ -1,4 +1,4 @@
-image: golang:1.12.5
+image: docker:stable
 
 services:
   - docker:dind
@@ -6,6 +6,8 @@ services:
 variables:
   DOCKER_DRIVER: overlay2
   DOCKER_HOST: tcp://localhost:2375
+  KUBECTL: v1.15.0
+  KIND: v0.4.0
 
 stages:
   - test
@@ -13,7 +15,15 @@ stages:
 smoketest:
   stage: test
   script:
-    - curl -fsSL https://get.docker.com | sh
-    - env
-    - export DOCKER_HOST=tcp://localhost:2375
-    - ./kind-smoketest.sh
+    - apk add -U wget
+    - wget -O /usr/local/bin/kind https://github.com/kubernetes-sigs/kind/releases/download/${KIND}/kind-linux-amd64
+    - chmod +x /usr/local/bin/kind
+    - wget -O /usr/local/bin/kubectl https://storage.googleapis.com/kubernetes-release/release/${KUBECTL}/bin/linux/amd64/kubectl
+    - chmod +x /usr/local/bin/kubectl
+    - kind create cluster --config=./gitlab/kind-config.yaml
+    - sed -i -E -e 's/localhost|0\.0\.0\.0/docker/g' "$(kind get kubeconfig-path --name="kind")"
+    - export KUBECONFIG="$(kind get kubeconfig-path --name="kind")"
+    - kind get kubeconfig-path --name="kind"
+    - kubectl get nodes -o wide
+    - kubectl get pods --all-namespaces -o wide
+    - kubectl get services --all-namespaces -o wide
