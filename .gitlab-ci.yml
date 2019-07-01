@@ -4,8 +4,6 @@ services:
   - docker:dind
 
 variables:
-  DOCKER_DRIVER: overlay2
-  DOCKER_HOST: tcp://localhost:2375
   KUBECTL: v1.15.0
   KIND: v0.4.0
 
